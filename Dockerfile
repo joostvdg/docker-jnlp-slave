@@ -36,6 +36,9 @@ RUN apk --update --no-cache add tar curl git python py-pip \
     && curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz | tar --strip-components=1 -xz -C /usr/local/bin docker/docker \
     && pip install docker-compose
 
+RUN echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && apk --no-cache add shadow 
+RUN addgroup -g 10001 docker && addgroup jenkins docker
+
 USER jenkins
 
 RUN docker -v
