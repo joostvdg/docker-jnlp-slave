@@ -26,4 +26,19 @@ LABEL Description="This is a base image, which allows connecting Jenkins agents 
 
 COPY jenkins-slave /usr/local/bin/jenkins-slave
 
+USER root
+
+ENV DOCKER_VERSION=17.12.1-ce
+ENV DOCKER_COMPOSE_VERSION=1.21.1
+
+RUN uname -a
+RUN apk --update --no-cache add tar curl git python py-pip \
+    && curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz | tar --strip-components=1 -xz -C /usr/local/bin docker/docker \
+    && pip install docker-compose
+
+USER jenkins
+
+RUN docker -v
+RUN docker-compose -v
+
 ENTRYPOINT ["jenkins-slave"]
